@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from './layout.module.css';
 import utilStyles from '../styles/utils.module.css';
 import Link from 'next/link';
+// import styles from '../styles/alert.module.css';
 import { clsx } from 'clsx';
-import moment from 'moment';
-
 const name = 'Syahdan';
-const siteTitle = 'Next.js Sample Website';
+import { useState, useEffect } from 'react'
+import moment from 'moment';
+const currentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+export const siteTitle = 'Next.js Sample Website';
 
 export default function Layout({ children, home, type }) {
   const [isClient, setIsClient] = useState(false)
@@ -16,19 +17,9 @@ export default function Layout({ children, home, type }) {
   useEffect(() => {
     setIsClient(true)
   }, [])
-  const [currentDate, setCurrentDate] = useState(moment().format('MMMM Do YYYY, h:mm:ss a'));
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentDate(moment().format('MMMM Do YYYY, h:mm:ss a'));
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
   return (
+
+   
     <div className={styles.container}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
@@ -39,7 +30,7 @@ export default function Layout({ children, home, type }) {
         <meta
           property="og:image"
           content={`https://og-image.vercel.app/${encodeURI(
-            siteTitle
+            siteTitle,
           )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
         />
         <meta name="og:title" content={siteTitle} />
@@ -61,43 +52,40 @@ export default function Layout({ children, home, type }) {
         ) : (
           <>
             <Link href="/">
-              <a>
-                <Image
-                  priority
-                  src="/images/profile.jpg"
-                  className={utilStyles.borderCircle}
-                  height={108}
-                  width={108}
-                  alt=""
-                />
-              </a>
+              <Image
+                priority
+                src="/images/profile.jpg"
+                className={utilStyles.borderCircle}
+                height={108}
+                width={108}
+                alt=""
+              />
             </Link>
             <h2 className={utilStyles.headingLg}>
-              <Link href="/">
-                <a className={utilStyles.colorInherit}>{name}</a>
+              <Link href="/" className={utilStyles.colorInherit}>
+                {name}
               </Link>
             </h2>
-            <div
-              className={clsx({
-                [styles.success]: type === 'success',
-                [styles.error]: type === 'error',
-              })}
-            >
-              {children}
-            </div>
+            <div className={clsx({
+            [styles.success]: type === 'success',
+            [styles.error]: type === 'error',
+            })}
+        >
+        {children}
+      </div>
           </>
         )}
       </header>
       <main>{children}</main>
-      {!home && isClient&&(
+      {!home && (
         <div className={styles.backToHome}>
-          <Link href="/">
-            <a>← Back to home</a>
-          </Link>
+          <Link href="/">← Back to home</Link>
         </div>
       )}
       <footer className={styles.footer}>
-        {home && <span>{currentDate}</span>}
+        {home &&isClient&& (
+              <span>{currentDate}</span>
+        )}
       </footer>
     </div>
   );
