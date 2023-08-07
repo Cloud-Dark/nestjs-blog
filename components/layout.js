@@ -6,11 +6,20 @@ import Link from 'next/link';
 // import styles from '../styles/alert.module.css';
 import { clsx } from 'clsx';
 const name = 'Syahdan';
-
+import { useState, useEffect } from 'react'
+import moment from 'moment';
+const currentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
 export const siteTitle = 'Next.js Sample Website';
 
 export default function Layout({ children, home, type }) {
+  const [isClient, setIsClient] = useState(false)
+ 
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   return (
+
+   
     <div className={styles.container}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
@@ -73,6 +82,11 @@ export default function Layout({ children, home, type }) {
           <Link href="/">← Back to home</Link>
         </div>
       )}
+      <footer className={styles.footer}>
+        {home &&isClient&& (
+              <span>{currentDate}</span>
+        )}
+      </footer>
     </div>
   );
 }
